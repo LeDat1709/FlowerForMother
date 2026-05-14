@@ -1,87 +1,38 @@
-# Đóa Hoa Tặng Mẹ - Trang Web Ý Nghĩa
-
-Một trang web đẹp và cảm động dành tặng mẹ yêu, với những hiệu ứng hoa hồng và lời yêu thương chân thành.
-
-## 🌹 Tính Năng Chính
-
-### 🎨 Thiết Kế Đẹp Mắt
-- **Hiệu ứng hoa hồng động**: Hoa hồng nở rộ với animation mượt mà
-- **Gradient background**: Màu nền tím hồng lãng mạn
-- **Responsive design**: Tương thích mọi thiết bị
-
-### 💝 Nội Dung Ý Nghĩa
-- **Thơ ca về mẹ**: Những vần thơ tình cảm về tình mẫu tử
-- **Lời thư cảm động**: Bức thư tay gửi mẹ với lời yêu thương chân thành
-- **Kỷ niệm đẹp**: Những card kỷ niệm về sự hy sinh và tình yêu thương của mẹ
-
-### ✨ Hiệu Ứng Tương Tác
-- **Click trái tim**: Tạo hiệu ứng trái tim bay lên
-- **Gửi lời nhắn**: Viết và gửi lời yêu thương đến mẹ
-- **Pháo hoa trái tim**: Hiệu ứng pháo hoa khi tải trang
-- **Hiệu ứng parallax**: Background chuyển động khi scroll
-- **Click anywhere**: Tạo trái tim nhỏ tại vị trí click
-
-### 🎵 Nhạc Nền
-- Nhạc nền du dương, cảm động (tùy chọn)
-
-## 🚀 Cách Sử Dụng
-
-1. **Mở trang web**: Mở file `index.html` trong trình duyệt
-2. **Tận hưởng trải nghiệm**:
-   - Xem hiệu ứng hoa hồng động
-   - Đọc những lời yêu thương
-   - Click vào nút trái tim để tạo hiệu ứng
-   - Viết lời nhắn gửi mẹ
-
-## 📁 Cấu Trúc File
-
-```
-FLowerForMother/
-├── index.html          # File HTML chính
-├── style.css           # File CSS với thiết kế đẹp
-├── script.js           # File JavaScript với hiệu ứng tương tác
-├── README.md           # File hướng dẫn này
-└── music.mp3           # Nhạc nền (tùy chọn)
-```
-
-## 🛠️ Tùy Chỉnh
-
-### Thay đổi nội dung
-- Mở file `index.html` và chỉnh sửa các phần:
-  - Tiêu đề trong `<h1>` và `<h2>`
-  - Nội dung thơ trong class `poem`
-  - Lời thư trong class `letter-content`
-
-### Thay đổi màu sắc
-- Mở file `style.css` và chỉnh sửa:
-  - Màu nền trong `body` background
-  - Màu hoa hồng trong `.petal`
-  - Màu các button
-
-### Thêm nhạc nền
-1. Thêm file nhạc `music.mp3` vào thư mục
-2. Hoặc thay đổi đường dẫn trong thẻ `<audio>` trong `index.html`
-
-## 🌟 Hiệu Ứng Đặc Biệt
-
-- **Hoa hồng động**: 5 cánh hoa với hiệu ứng nở rộ liên tục
-- **Trái tim bay**: Click button hoặc ngẫu nhiên tạo trái tim bay lên
-- **Pháo hoa**: Hiệu ứng pháo hoa trái tim khi tải trang
-- **Gõ chữ**: Tiêu đề được hiệu ứng gõ chữ
-- **Scroll animation**: Các section hiện lên mượt mà khi scroll
-
-## 📱 Responsive
-
-Trang web được thiết kế responsive hoàn hảo:
-- Mobile: < 768px
-- Tablet: 768px - 1024px  
-- Desktop: > 1024px
-
-## ❤️ Thông Điệp
-
-Đây là món quà nhỏ nhưng chứa đựng tình yêu lớn lao gửi đến người mẹ tuyệt vời nhất. Mỗi hiệu ứng, mỗi dòng chữ đều được tạo ra với tất cả sự chân thành và tình yêu thương.
-
----
-
-**Made with ❤️ for the most wonderful mother**
 # FlowerForMother
+
+Trang web nhỏ làm quà tặng mẹ - một bó 9 đóa hoa với hiệu ứng nở, ngôi sao lấp lánh, bướm bay và nhạc nền.
+
+## Nội dung
+
+- 9 đóa hoa CSS, mỗi hoa một màu, sắp xếp thành hình quạt
+- Lời nhắn gõ từng chữ (typewriter)
+- Phần ý nghĩa từng màu hoa, chuyển động fade-in lần lượt
+- Pháo hoa khi click vào trang
+- Nút chuyển ngôn ngữ Việt / Anh
+- Nhạc nền YouTube (bài *Ước mơ của mẹ*), tự phát khi mở trang
+
+## Cách chạy
+
+Vì có dùng YouTube IFrame API nên không mở trực tiếp file `.html` được, cần một local server:
+
+- VS Code: cài extension **Live Server** rồi chuột phải `index-new.html` → *Open with Live Server*
+- Hoặc Python: `python -m http.server 8000` rồi mở `http://localhost:8000/index-new.html`
+- Hoặc deploy thẳng lên Vercel / Netlify - chạy ngon luôn
+
+## Cấu trúc
+
+```
+index-new.html    - Markup
+style-new.css     - Toàn bộ style và animation
+main.js           - Hiệu ứng, chuyển ngôn ngữ, điều khiển nhạc
+```
+
+## Tuỳ chỉnh
+
+- **Đổi bài nhạc**: sửa `YOUTUBE_VIDEO_ID` ở đầu file `main.js`
+- **Đổi lời nhắn**: sửa object `MESSAGES` trong `main.js`
+- **Đổi vị trí / màu hoa**: tìm `.flower--1` đến `.flower--9` trong `style-new.css`
+
+## Số 9
+
+9 đóa hoa - đồng âm với *Cửu* (久) trong Hán Việt, nghĩa là lâu dài, vĩnh cửu. Tặng mẹ chúc tình yêu thương mãi mãi.
