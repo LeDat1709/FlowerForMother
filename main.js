@@ -1,13 +1,13 @@
-const YOUTUBE_VIDEO_ID = '1lZB1IBaXxU';
-
 const MESSAGES = {
   en: "I love you, Mom. You are the most beautiful flower in my life. Happy Mother's Day! 💐",
   vi: "Con yêu mẹ. Mẹ là đóa hoa đẹp nhất trong cuộc đời con. Chúc mừng Ngày của Mẹ! 💐"
 };
 
-let currentLang = 'en';
-let ytPlayer = null;
+let currentLang = 'vi';
 let isMusicPlaying = false;
+
+let introOpened = false;
+let cardOpened = false;
 
 onload = () => {
     const c = setTimeout(() => {
@@ -18,30 +18,102 @@ onload = () => {
     createStars(40);
     createButterflies(3);
 
-    setTimeout(() => startTypewriter(), 2000);
+    applyLanguage();
 
     document.getElementById('langToggle').addEventListener('click', toggleLanguage);
     document.getElementById('musicToggle').addEventListener('click', toggleMusic);
 
-    loadYouTubeAPI();
+    initMusic();
+    runCountdown();
+    initIntroCard();
 
     document.addEventListener('click', (e) => {
+      if (!introOpened) return;
       if (e.target.closest('.control-btn')) return;
+      if (e.target.closest('.intro-overlay')) return;
       createFireworks(e.clientX, e.clientY);
     });
   };
 
-  function toggleLanguage() {
-    currentLang = currentLang === 'en' ? 'vi' : 'en';
-    document.getElementById('langLabel').textContent = currentLang === 'en' ? 'VI' : 'EN';
+  function runCountdown() {
+    const overlay = document.getElementById('countdownOverlay');
+    const numEl = document.getElementById('countdownNum');
+    if (!overlay || !numEl) return;
 
+    let n = 5;
+    numEl.textContent = n;
+
+    const tick = () => {
+      n--;
+      if (n > 0) {
+        numEl.classList.remove('go');
+        numEl.style.animation = 'none';
+        void numEl.offsetWidth;
+        numEl.style.animation = '';
+        numEl.textContent = n;
+      } else if (n === 0) {
+        numEl.classList.add('go');
+        numEl.style.animation = 'none';
+        void numEl.offsetWidth;
+        numEl.style.animation = '';
+        numEl.textContent = currentLang === 'vi' ? 'Mở quà thôi!' : "Let's open!";
+      } else {
+        clearInterval(interval);
+        overlay.classList.add('hidden');
+        document.getElementById('introOverlay').classList.remove('hidden');
+        if (bgMusic && bgMusic.paused) {
+          bgMusic.play().then(() => {
+            isMusicPlaying = true;
+            updateMusicUI(true);
+          }).catch(() => {});
+        }
+      }
+    };
+    const interval = setInterval(tick, 1000);
+  }
+
+  function initIntroCard() {
+    const cover = document.getElementById('cardCover');
+    const overlay = document.getElementById('introOverlay');
+    const continueBtn = document.getElementById('continueBtn');
+    if (!cover || !overlay || !continueBtn) return;
+
+    const cardStage = document.querySelector('.card-stage');
+    cover.addEventListener('click', () => {
+      if (cardOpened) return;
+      cardOpened = true;
+      cardStage.classList.add('opened');
+
+      setTimeout(() => {
+        continueBtn.classList.add('visible');
+      }, 1900);
+    });
+
+    continueBtn.addEventListener('click', () => {
+      if (introOpened) return;
+      introOpened = true;
+      overlay.classList.add('hidden');
+      document.body.classList.add('intro-done');
+      startTypewriter(500);
+    });
+  }
+
+  function applyLanguage() {
+    document.getElementById('langLabel').textContent = currentLang === 'en' ? 'VI' : 'EN';
     document.querySelectorAll('[data-en][data-vi]').forEach(el => {
       el.textContent = el.getAttribute('data-' + currentLang);
     });
+  }
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'vi' : 'en';
+    applyLanguage();
 
     const tw = document.getElementById('typewriter');
-    tw.innerHTML = '';
-    startTypewriter(0);
+    if (tw) {
+      tw.innerHTML = '';
+      if (introOpened) startTypewriter(0);
+    }
   }
 
   function startTypewriter(delay = 0) {
@@ -50,80 +122,51 @@ onload = () => {
     }, delay);
   }
 
-  function loadYouTubeAPI() {
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    document.head.appendChild(tag);
+  let bgMusic = null;
+
+  function initMusic() {
+    bgMusic = document.getElementById('bgMusic');
+    if (!bgMusic) return;
+    bgMusic.volume = 0.5;
+
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        isMusicPlaying = true;
+        updateMusicUI(true);
+      }).catch(() => {
+        const startOnInteraction = () => {
+          bgMusic.play().then(() => {
+            isMusicPlaying = true;
+            updateMusicUI(true);
+          }).catch(() => {});
+          document.removeEventListener('click', startOnInteraction);
+          document.removeEventListener('keydown', startOnInteraction);
+          document.removeEventListener('touchstart', startOnInteraction);
+        };
+        document.addEventListener('click', startOnInteraction);
+        document.addEventListener('keydown', startOnInteraction);
+        document.addEventListener('touchstart', startOnInteraction);
+      });
+    }
   }
 
-  let ytReady = false;
-  let pendingPlay = false;
-
-  window.onYouTubeIframeAPIReady = function() {
-    ytPlayer = new YT.Player('ytPlayer', {
-      width: '200',
-      height: '200',
-      videoId: YOUTUBE_VIDEO_ID,
-      playerVars: {
-        autoplay: 1,
-        mute: 1,
-        loop: 1,
-        playlist: YOUTUBE_VIDEO_ID,
-        controls: 0,
-        playsinline: 1
-      },
-      events: {
-        onReady: () => {
-          ytReady = true;
-          ytPlayer.playVideo();
-          document.getElementById('musicIcon').textContent = '⏸';
-          document.getElementById('musicToggle').classList.add('active');
-          isMusicPlaying = true;
-
-          const unmuteOnFirstInteraction = () => {
-            if (ytPlayer && isMusicPlaying) {
-              ytPlayer.unMute();
-              ytPlayer.setVolume(50);
-            }
-            document.removeEventListener('click', unmuteOnFirstInteraction);
-            document.removeEventListener('keydown', unmuteOnFirstInteraction);
-            document.removeEventListener('touchstart', unmuteOnFirstInteraction);
-          };
-          document.addEventListener('click', unmuteOnFirstInteraction);
-          document.addEventListener('keydown', unmuteOnFirstInteraction);
-          document.addEventListener('touchstart', unmuteOnFirstInteraction);
-        },
-        onStateChange: (e) => {
-          if (e.data === YT.PlayerState.ENDED) ytPlayer.playVideo();
-        },
-        onError: () => {}
-      }
-    });
-  };
-
-  function playMusic() {
-    try {
-      ytPlayer.unMute();
-      ytPlayer.setVolume(50);
-      ytPlayer.playVideo();
-      document.getElementById('musicIcon').textContent = '⏸';
-      document.getElementById('musicToggle').classList.add('active');
-      isMusicPlaying = true;
-    } catch (err) {}
+  function updateMusicUI(playing) {
+    document.getElementById('musicIcon').textContent = playing ? '⏸' : '♪';
+    document.getElementById('musicToggle').classList.toggle('active', playing);
   }
 
   function toggleMusic() {
-    if (!ytReady) {
-      pendingPlay = true;
-      return;
-    }
+    if (!bgMusic) return;
     if (isMusicPlaying) {
-      ytPlayer.pauseVideo();
-      document.getElementById('musicIcon').textContent = '♪';
-      document.getElementById('musicToggle').classList.remove('active');
+      bgMusic.pause();
       isMusicPlaying = false;
+      updateMusicUI(false);
     } else {
-      playMusic();
+      bgMusic.play().then(() => {
+        isMusicPlaying = true;
+        updateMusicUI(true);
+      }).catch(() => {});
     }
   }
 

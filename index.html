@@ -4,11 +4,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style-new.css">
     <title>Happy Mother's Day</title>
 </head>
     
 <body class="not-loaded">
+    <div class="countdown-overlay" id="countdownOverlay">
+      <div class="countdown-num" id="countdownNum">5</div>
+    </div>
+
+    <div class="intro-overlay hidden" id="introOverlay">
+      <div class="card-stage">
+        <div class="invitation-card" id="invitationCard">
+          <div class="card-inside card-inside-left">
+            <div class="inside-photo">
+              <div class="photo-flower">❀</div>
+              <div class="photo-caption" data-en="For the most beautiful flower of my life" data-vi="Tặng đoá hoa đẹp nhất đời con">For the most beautiful flower of my life</div>
+            </div>
+          </div>
+          <div class="card-inside card-inside-right">
+            <div class="letter-title" data-en="Dear Mom," data-vi="Mẹ yêu của con,">Dear Mom,</div>
+            <div class="letter-body" data-en="Thank you for everything you have done for me. For the late nights, the early mornings, and every single moment in between. You taught me what love truly means, and how to be strong even when life feels heavy.&#10;&#10;Today, on Mother's Day, I just want you to know: you are the most beautiful flower in my world, and your love blooms in my heart every day." data-vi="Cảm ơn mẹ vì tất cả những gì mẹ đã làm cho con. Vì những đêm thức trắng, những buổi sớm tinh mơ, và từng khoảnh khắc giữa cuộc đời này. Mẹ dạy con thế nào là yêu thương thật sự, và làm sao để mạnh mẽ khi đời nặng gánh.&#10;&#10;Hôm nay, Ngày của Mẹ, con chỉ muốn mẹ biết: mẹ là đoá hoa đẹp nhất trong thế giới của con, và tình yêu của mẹ nở trong tim con mỗi ngày.">Thank you for everything you have done for me. For the late nights, the early mornings, and every single moment in between. You taught me what love truly means, and how to be strong even when life feels heavy.
+
+Today, on Mother's Day, I just want you to know: you are the most beautiful flower in my world, and your love blooms in my heart every day.</div>
+            <div class="letter-signoff" data-en="With all my love," data-vi="Thương mẹ thật nhiều,">With all my love,</div>
+          </div>
+          <div class="card-cover" id="cardCover">
+            <div class="cover-deco-top"></div>
+            <div class="cover-title" data-en="To My Mother" data-vi="Gửi Mẹ">To My Mother</div>
+            <div class="cover-flower">❀</div>
+            <div class="cover-hint" data-en="Click to open" data-vi="Bấm để mở">Click to open</div>
+            <div class="cover-deco-bottom"></div>
+          </div>
+        </div>
+      </div>
+      <button class="continue-btn" id="continueBtn" data-en="Continue →" data-vi="Tiếp tục →">Continue →</button>
+    </div>
+
     <div class="night"></div>
     <div class="stars" id="stars"></div>
     <div class="butterflies" id="butterflies"></div>
@@ -22,7 +57,9 @@
       </button>
     </div>
 
-    <div class="yt-wrapper"><div id="ytPlayer"></div></div>
+    <audio id="bgMusic" autoplay loop>
+      <source src="./music/uocmocuame.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="happy-woman-day" data-en="Happy Mother's Day!" data-vi="Chúc Mừng Ngày Của Mẹ!">Happy Mother's Day!</div>
     <div class="flowers">
@@ -440,6 +477,12 @@
           <div class="leaf leaf--3"></div>
         </div>
       </div>
+    </div>
+
+    <div class="mother-poem">
+      <div class="mother-poem__line" data-en='"Even when grown, I am still my mother&apos;s child"' data-vi='"Con dù lớn vẫn là con của mẹ"'>"Con dù lớn vẫn là con của mẹ"</div>
+      <div class="mother-poem__line" data-en='"Through all of life, mother&apos;s love follows me."' data-vi='"Đi suốt đời lòng mẹ vẫn theo con."'>"Đi suốt đời lòng mẹ vẫn theo con."</div>
+      <div class="mother-poem__author">— Chế Lan Viên</div>
     </div>
 
     <div class="love-message">
