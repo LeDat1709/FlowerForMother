@@ -84,6 +84,13 @@ onload = () => {
       cardOpened = true;
       cardStage.classList.add('opened');
 
+      if (bgMusic && bgMusic.paused) {
+        bgMusic.play().then(() => {
+          isMusicPlaying = true;
+          updateMusicUI(true);
+        }).catch(() => {});
+      }
+
       setTimeout(() => {
         continueBtn.classList.add('visible');
       }, 1900);
